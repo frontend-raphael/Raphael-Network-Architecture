@@ -3,20 +3,15 @@
   R: Response Type
 */
 
-import { isCommonSuccess } from "@/utils/typeGuard";
 import { CommonError, CommonResult, Failure, Success } from ".";
 import { commonErrorCode } from "@/types";
 
 abstract class CommonUseCase<P, R> {
   public async invoke(parameter: P): Promise<CommonResult<R>> {
     try {
-      const result: CommonResult<R> = await this.execute(parameter);
+      const result = (await this.execute(parameter)) as Success<R>;
 
-      if (isCommonSuccess(result)) {
-        return new Success(result.data);
-      }
-
-      return new Failure(commonErrorCode[99], commonErrorCode[99]);
+      return new Success(result.data);
     } catch (e) {
       if (e instanceof CommonError) {
         return new Failure(e.status, e.errorMessage);

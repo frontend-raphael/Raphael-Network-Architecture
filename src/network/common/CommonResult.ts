@@ -9,10 +9,10 @@ import {
 } from "@/types";
 
 abstract class CommonResult<T> {
-  public readonly state: CommonResultStatus;
+  public readonly status: CommonResultStatus;
 
-  protected constructor(state: CommonResultStatus) {
-    this.state = state;
+  protected constructor(status: CommonResultStatus) {
+    this.status = status;
   }
 }
 
