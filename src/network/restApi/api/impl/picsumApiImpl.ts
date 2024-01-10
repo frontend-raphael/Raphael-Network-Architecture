@@ -1,12 +1,10 @@
 import { defaultParams } from "@/resources";
-import { PicsumService } from "..";
+import { PicsumApi } from "..";
 import {
   ResponseGetImageDetail,
   ResponseGetImageList,
   apiModule,
-  convertApiResult,
 } from "@/network";
-import { convertCommonError } from "@/utils";
 
 const getImageList = async (
   page: number,
@@ -20,25 +18,25 @@ const getImageList = async (
       },
     })
     .catch((error) => {
-      return convertCommonError(error);
+      return error;
     });
 
-  return convertApiResult(res);
+  return res;
 };
 
 const getImageDetail = async (id: number) => {
   const res = await apiModule
     .get<ResponseGetImageDetail>(`/id/${id}/info`)
     .catch((error) => {
-      return convertCommonError(error);
+      return error;
     });
 
-  return convertApiResult(res);
+  return res;
 };
 
-const picsumServiceImpl: PicsumService = {
+const picsumApiImpl: PicsumApi = {
   getImageList: getImageList,
   getImageDetail: getImageDetail,
 };
 
-export default picsumServiceImpl;
+export default picsumApiImpl;

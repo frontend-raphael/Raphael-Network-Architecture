@@ -3,21 +3,28 @@
   R: Response Type
 */
 
-import { CommonError, CommonResult, Failure, Success } from ".";
+import { isCommonFailure, isCommonSuccess } from "@/utils";
+import { CommonResult, Failure, Success } from ".";
 import { commonErrorCode } from "@/types";
 
 abstract class CommonUseCase<P, R> {
   public async invoke(parameter: P): Promise<CommonResult<R>> {
     try {
-      const result = (await this.execute(parameter)) as Success<R>;
+      const result = await this.execute(parameter);
 
-      return new Success(result.data);
-    } catch (e) {
-      if (e instanceof CommonError) {
-        return new Failure(e.status, e.errorMessage);
+      if (isCommonSuccess(result)) {
+        return new Success(result.data);
+      } else if (isCommonFailure(result)) {
+        return new Failure(
+          result.errorCode,
+          result.errorMessage,
+          result.errorData
+        );
+      } else {
+        return new Failure(99, commonErrorCode[99]);
       }
-
-      return new Failure(commonErrorCode[99], commonErrorCode[99]);
+    } catch (e) {
+      return new Failure(99, commonErrorCode[99], e);
     }
   }
 

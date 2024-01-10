@@ -4,7 +4,7 @@ import {
   ResponseGetImageList,
 } from "../..";
 
-interface PicsumService {
+interface PicsumDataSource {
   getImageList: (
     page: number,
     limit: number
@@ -14,4 +14,4 @@ interface PicsumService {
   ) => Promise<CommonApiResult<ResponseGetImageDetail>>;
 }
 
-export type { PicsumService };
+export type { PicsumDataSource };

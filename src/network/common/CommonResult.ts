@@ -2,11 +2,7 @@
   T: Data Type
 */
 
-import {
-  CommonErrorCode,
-  CommonResultStatus,
-  commonResultStatus,
-} from "@/types";
+import { CommonResultStatus, commonResultStatus } from "@/types";
 
 abstract class CommonResult<T> {
   public readonly status: CommonResultStatus;
@@ -26,13 +22,15 @@ class Success<T> extends CommonResult<T> {
 }
 
 class Failure extends CommonResult<never> {
-  public readonly errorCode: CommonErrorCode;
+  public readonly errorCode: number;
   public readonly errorMessage: string;
+  public readonly errorData: any | null; // your Custom Error Type
 
-  constructor(errorCode: CommonErrorCode, errorMessage: string) {
+  constructor(errorCode: number, errorMessage: string, errorData: any = null) {
     super(commonResultStatus.FAILURE);
     this.errorCode = errorCode;
     this.errorMessage = errorMessage;
+    this.errorData = errorData;
   }
 }
 
